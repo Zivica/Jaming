@@ -113,8 +113,7 @@ def game():
         maprect.center = (width//2, height//2)
         screen.blit(map, maprect)
 
-        hero = pygame.image.load('Assets/Character/boy.png')
-        hero.set_colorkey(white) #ovo bi trebalo da resava problem sa belim kvadratom oko decaka
+        hero = pygame.image.load('Assets/Character/hero.png')
         hero = pygame.transform.scale(hero, (100, 100))
         hero_rect = hero.get_rect()
         hero_rect.topleft = (player_x, player_y)
