@@ -103,8 +103,8 @@ def game():
     running = True
 
     # macka
-    cat1 = pygame.image.load('Assets/Character/cat.png').convert_alpha()
-    cat2 = pygame.image.load('Assets/Character/bad_cat.png').convert_alpha()
+    cat1 = pygame.image.load('Assets/Character/cat1.png').convert_alpha()
+    cat2 = pygame.image.load('Assets/Character/bad_cat1.png').convert_alpha()
     cat1 = pygame.transform.scale(cat1, (50, 50))
     cat2 = pygame.transform.scale(cat2, (50, 50))
     cat_frames = [cat1, cat2]
