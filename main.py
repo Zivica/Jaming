@@ -6,8 +6,8 @@ import os
 pygame.init()
 
 # Ekran
-width, height = 800, 600
-screen = pygame.display.set_mode((width, height))
+screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+width, height = screen.get_size()
 pygame.display.set_caption("Prototype")
 
 # Boje - promenljive verovatno cemo traziti tacno koje boje su nam potrebene
@@ -42,20 +42,20 @@ def draw_text(text, font, color, surface, x, y):
 def main_menu():
     while True:
         screen.fill(black)
-        draw_text('Main Menu', font, white, screen, width / 2, 100)
+        draw_text('Main Menu', font, white, screen, width / 2, height / 2 - 175)
 
         # Buttons
-        start_button = pygame.Rect(width / 2 - 100, 200, 200, 50)
+        start_button = pygame.Rect(width / 2 - 100, height / 2 - 75, 200, 50)
         pygame.draw.rect(screen, red, start_button)
-        draw_text('Start Game', small_font, white, screen, width / 2, 225)
+        draw_text('Start Game', small_font, white, screen, width / 2, height / 2 - 50)
 
-        instructions_button = pygame.Rect(width / 2 - 100, 300, 200, 50)
+        instructions_button = pygame.Rect(width / 2 - 100, height / 2 + 25, 200, 50)
         pygame.draw.rect(screen, red, instructions_button)
-        draw_text('Instructions', small_font, white, screen, width / 2, 325)
+        draw_text('Instructions', small_font, white, screen, width / 2, height / 2 + 50)
 
-        quit_button = pygame.Rect(width / 2 - 100, 400, 200, 50)
+        quit_button = pygame.Rect(width / 2 - 100, height / 2 + 125, 200, 50)
         pygame.draw.rect(screen, red, quit_button)
-        draw_text('Quit', small_font, white, screen, width / 2, 425)
+        draw_text('Quit', small_font, white, screen, width / 2, height / 2 + 150)
 
         mx, my = pygame.mouse.get_pos()
         click = False
