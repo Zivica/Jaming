@@ -98,14 +98,28 @@ def main_menu():
 def game():
     # Originalni kvadrat
     player_size = 50
-    player_x = width // 2
-    player_y = height // 2
+    player_x = width // 4
+    player_y = height // 4
     player_speed = 5
     running = True
 
     while running:
-        screen.fill(blue)
-        pygame.draw.rect(screen, red, (player_x, player_y, player_size, player_size))
+        #pozadina
+        screen.fill(black)
+        #mapa
+        map = pygame.image.load('Assets/Map/mapa_zhuta.png')
+        map = pygame.transform.scale(map, (4/3*height, height))
+        maprect = map.get_rect()
+        maprect.center = (width//2, height//2)
+        screen.blit(map, maprect)
+
+        hero = pygame.image.load('Assets/Character/boy.png')
+        hero.set_colorkey(white) #ovo bi trebalo da resava problem sa belim kvadratom oko decaka
+        hero = pygame.transform.scale(hero, (100, 100))
+        hero_rect = hero.get_rect()
+        hero_rect.topleft = (player_x, player_y)
+        screen.blit(hero, hero_rect)
+
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
