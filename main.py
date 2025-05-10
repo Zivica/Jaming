@@ -96,30 +96,100 @@ def main_menu():
 
 
 def game():
-    # Originalni kvadrat
-    player_size = 50
+    player_size = 150
     player_x = width // 4
     player_y = height // 4
     player_speed = 5
     running = True
 
+    # macka
+    cat1 = pygame.image.load('Assets/Character/cat.png').convert_alpha()
+    cat2 = pygame.image.load('Assets/Character/bad_cat.png').convert_alpha()
+    cat1 = pygame.transform.scale(cat1, (50, 50))
+    cat2 = pygame.transform.scale(cat2, (50, 50))
+    cat_frames = [cat1, cat2]
+    cat_frame_index = 0
+    last_switch = pygame.time.get_ticks()
+    switch_interval = 300  # milisekundi
+
+    # karakter slike
+    hero_idle = pygame.image.load('Assets/Character/hero.png').convert_alpha()
+    hero_idle = pygame.transform.scale(hero_idle, (player_size, player_size))
+
+    hero_walk = {
+        "left": [pygame.image.load('Assets/Character/hero_left.png').convert_alpha(),
+                 pygame.image.load('Assets/Character/hero_left_step.png').convert_alpha()],
+        "right": [pygame.image.load('Assets/Character/hero_right.png').convert_alpha(),
+                  pygame.image.load('Assets/Character/hero_right_step.png').convert_alpha()],
+        "up": [pygame.image.load('Assets/Character/hero_back.png').convert_alpha(),
+               pygame.image.load('Assets/Character/hero_back_step.png').convert_alpha()],
+        "down": [pygame.image.load('Assets/Character/hero.png').convert_alpha(),
+                 pygame.image.load('Assets/Character/hero_step.png').convert_alpha()]
+    }
+
+    for direction in hero_walk:
+        hero_walk[direction] = [pygame.transform.scale(img, (player_size, player_size)) for img in hero_walk[direction]]
+
+    hero_direction = "down"
+    frame_index = 0
+    last_frame_switch = pygame.time.get_ticks()
+    frame_interval = 200
+
     while running:
-        #pozadina
         screen.fill(black)
-        #mapa
-        map = pygame.image.load('Assets/Map/mapa_zhuta.png')
-        map = pygame.transform.scale(map, (4/3*height, height))
+
+        # Mapa
+        map = pygame.image.load('Assets/Map/mapa.png')
+        map = pygame.transform.scale(map, (4 / 3 * height, height))
         maprect = map.get_rect()
-        maprect.center = (width//2, height//2)
+        maprect.center = (width // 2, height // 2)
         screen.blit(map, maprect)
 
-        hero = pygame.image.load('Assets/Character/hero.png')
-        hero = pygame.transform.scale(hero, (100, 100))
-        hero_rect = hero.get_rect()
-        hero_rect.topleft = (player_x, player_y)
-        screen.blit(hero, hero_rect)
+        # Animacija mačke
+        current_time = pygame.time.get_ticks()
+        if current_time - last_switch >= switch_interval:
+            cat_frame_index = (cat_frame_index + 1) % len(cat_frames)
+            last_switch = current_time
+        screen.blit(cat_frames[cat_frame_index], (width // 4 - 55, height // 4 - 50))
 
+        # Ulaz i pomeranje
+        keys = pygame.key.get_pressed()
+        moving = False
 
+        if keys[pygame.K_LEFT]:
+            player_x -= player_speed
+            hero_direction = "left"
+            moving = True
+        elif keys[pygame.K_RIGHT]:
+            player_x += player_speed
+            hero_direction = "right"
+            moving = True
+        elif keys[pygame.K_UP]:
+            player_y -= player_speed
+            hero_direction = "up"
+            moving = True
+        elif keys[pygame.K_DOWN]:
+            player_y += player_speed
+            hero_direction = "down"
+            moving = True
+
+        # Granice
+        player_x = max(0, min(width - player_size, player_x))
+        player_y = max(0, min(height - player_size, player_y))
+
+        # Hero animacija
+        if moving:
+            now = pygame.time.get_ticks()
+            if now - last_frame_switch > frame_interval:
+                frame_index = (frame_index + 1) % 2
+                last_frame_switch = now
+            hero_img = hero_walk[hero_direction][frame_index]
+        else:
+            hero_img = hero_idle
+
+        screen.blit(hero_img, (player_x, player_y))
+
+        # Eventi
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -127,19 +197,6 @@ def game():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     running = False
-
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
-            player_x -= player_speed
-        if keys[pygame.K_RIGHT]:
-            player_x += player_speed
-        if keys[pygame.K_UP]:
-            player_y -= player_speed
-        if keys[pygame.K_DOWN]:
-            player_y += player_speed
-
-        player_x = max(0, min(width - player_size, player_x))
-        player_y = max(0, min(height - player_size, player_y))
 
         pygame.display.flip()
         pygame.time.delay(30)
