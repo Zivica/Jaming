@@ -15,6 +15,8 @@ blue = (0, 0, 128)
 red = (192, 10, 0)
 black = (0, 0, 0)
 white = (255, 255, 255)
+grey_56 = (143, 143, 143, 32)
+grey_33 = (120, 120, 120)
 
 # Font
 # Treba se odluchiti za font moj trenutni predlog (Aurora by StorytypeStudio ili neki drugi to cemo i Marka da pitamo)
@@ -44,17 +46,28 @@ def main_menu():
         screen.fill(black)
         draw_text('Main Menu', font, white, screen, width / 2, height / 2 - 175)
 
-        # Buttons
+        # Start button
         start_button = pygame.Rect(width / 2 - 100, height / 2 - 75, 200, 50)
-        pygame.draw.rect(screen, red, start_button)
+        start_button_above = pygame.Rect(width / 2 - 90, height / 2 - 70, 180, 40)
+
+        pygame.draw.rect(screen, grey_56, start_button)
+        pygame.draw.rect(screen, grey_33, start_button_above)
         draw_text('Start Game', small_font, white, screen, width / 2, height / 2 - 50)
 
+        # Instructions button
         instructions_button = pygame.Rect(width / 2 - 100, height / 2 + 25, 200, 50)
-        pygame.draw.rect(screen, red, instructions_button)
+        instructions_button_above = pygame.Rect(width/ 2 - 90, height / 2 + 30, 180, 40)
+
+        pygame.draw.rect(screen, grey_56, instructions_button)
+        pygame.draw.rect(screen, grey_33, instructions_button_above)
         draw_text('Instructions', small_font, white, screen, width / 2, height / 2 + 50)
 
+        # Quit button
         quit_button = pygame.Rect(width / 2 - 100, height / 2 + 125, 200, 50)
-        pygame.draw.rect(screen, red, quit_button)
+        quit_button_above = pygame.Rect(width / 2 - 90, height / 2 + 130, 180, 40)
+
+        pygame.draw.rect(screen, grey_56, quit_button)
+        pygame.draw.rect(screen, grey_33, quit_button_above)
         draw_text('Quit', small_font, white, screen, width / 2, height / 2 + 150)
 
         mx, my = pygame.mouse.get_pos()
