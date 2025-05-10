@@ -4,6 +4,7 @@ import os
 
 # Inicijalizacija
 pygame.init()
+pygame.mixer.init()
 
 # Ekran
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
@@ -18,10 +19,10 @@ white = (255, 255, 255)
 grey_56 = (143, 143, 143, 32)
 grey_33 = (120, 120, 120)
 
-# Font
-# Treba se odluchiti za font moj trenutni predlog (Aurora by StorytypeStudio ili neki drugi to cemo i Marka da pitamo)
+# Desired paths
 current_dir = os.path.dirname(__file__)
-font_path = os.path.join(current_dir, 'Assets', 'Fonts', 'deutsch_gothic', 'Deutsch.ttf')
+font_path = os.path.join(current_dir, 'Assets', 'Fonts', 'minecraftia', 'Minecraftia-Regular.ttf')
+sound_one_path = os.path.join(current_dir, 'Assets', 'Soundtrack', 'faza1_fotelja', 'popravka_kauca.mp3')
 
 try:
     font = pygame.font.Font(font_path, 74)
@@ -47,27 +48,18 @@ def main_menu():
         draw_text('Main Menu', font, white, screen, width / 2, height / 2 - 175)
 
         # Start button
-        start_button = pygame.Rect(width / 2 - 100, height / 2 - 75, 200, 50)
-        start_button_above = pygame.Rect(width / 2 - 90, height / 2 - 70, 180, 40)
-
+        start_button = pygame.Rect(width / 2 - 150, height / 2 - 80, 300, 50)
         pygame.draw.rect(screen, grey_56, start_button)
-        pygame.draw.rect(screen, grey_33, start_button_above)
         draw_text('Start Game', small_font, white, screen, width / 2, height / 2 - 50)
 
         # Instructions button
-        instructions_button = pygame.Rect(width / 2 - 100, height / 2 + 25, 200, 50)
-        instructions_button_above = pygame.Rect(width/ 2 - 90, height / 2 + 30, 180, 40)
-
+        instructions_button = pygame.Rect(width / 2 - 150, height / 2 + 25, 300, 50)
         pygame.draw.rect(screen, grey_56, instructions_button)
-        pygame.draw.rect(screen, grey_33, instructions_button_above)
         draw_text('Instructions', small_font, white, screen, width / 2, height / 2 + 50)
 
         # Quit button
-        quit_button = pygame.Rect(width / 2 - 100, height / 2 + 125, 200, 50)
-        quit_button_above = pygame.Rect(width / 2 - 90, height / 2 + 130, 180, 40)
-
+        quit_button = pygame.Rect(width / 2 - 150, height / 2 + 125, 300, 50)
         pygame.draw.rect(screen, grey_56, quit_button)
-        pygame.draw.rect(screen, grey_33, quit_button_above)
         draw_text('Quit', small_font, white, screen, width / 2, height / 2 + 150)
 
         mx, my = pygame.mouse.get_pos()
