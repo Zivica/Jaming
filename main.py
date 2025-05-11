@@ -99,7 +99,7 @@ def game():
     player_size = 150
     player_x = width // 4
     player_y = height // 4
-    player_speed = 5
+    player_speed = 20
     running = True
 
     # macka
@@ -145,37 +145,61 @@ def game():
         maprect.center = (width // 2, height // 2)
         screen.blit(map, maprect)
 
+        # Pravougaonici koji predstavljaju prostorije i hodnike
+        rooms = [
+            pygame.Rect(450 / 1920 * width, 370 / 1440 * height, 280 /  1920 * width, 100 / 1440 * height),  # Prostorija 1
+            pygame.Rect(850 / 1920 * width, 370 / 1440 * height, 5 / 1920 * width, 5 / 1440 * height) ,       # hodnik
+            pygame.Rect(950 / 1920 * width, 370 / 1440 * height, 530 / 1920 * width, 20 / 1440 * height),  # Prostorija 2
+            pygame.Rect(1430 / 1920 * width, 600 / 1440 * height, 5 / 1920 * width, 380 / 1440 * height),    # stepenište
+            pygame.Rect(1280 / 1920 * width, 1100 / 1440 * height, 240 / 1920 * width, 20 / 1440 * height),  # Prostorija 3
+            pygame.Rect(1100 / 1920 * width, 1095 / 1440 * height, 50 / 1920 * width, 5 / 1440 * height) ,       # hodnik
+            pygame.Rect(700 / 1920 * width, 1095 / 1440 * height, 250 / 1920 * width, 20 / 1440 * height),  # Prostorija 4
+            pygame.Rect(600 / 1920 * width, 1095 / 1440 * height, 10 / 1920 * width, 5 / 1440 * height) ,       # hodnik
+            pygame.Rect(400 / 1920 * width, 1095 / 1440 * height, 80 / 1920 * width, 20 / 1440 * height),  # Prostorija 5
+        ]
+
+
+        def is_in_room(x, y, size):
+            player_rect = pygame.Rect(x, y, size, size)
+            return any(room.colliderect(player_rect) for room in rooms)
+
+
         # Animacija mačke
         current_time = pygame.time.get_ticks()
         if current_time - last_switch >= switch_interval:
             cat_frame_index = (cat_frame_index + 1) % len(cat_frames)
             last_switch = current_time
-        screen.blit(cat_frames[cat_frame_index], (width // 4 - 55, height // 4 - 50))
+        screen.blit(cat_frames[cat_frame_index], (width // 4 - 53, height // 4 - 50))
 
         # Ulaz i pomeranje
         keys = pygame.key.get_pressed()
         moving = False
 
+        new_x, new_y = player_x, player_y
+
         if keys[pygame.K_LEFT]:
-            player_x -= player_speed
+            new_x -= player_speed
             hero_direction = "left"
             moving = True
         elif keys[pygame.K_RIGHT]:
-            player_x += player_speed
+            new_x += player_speed
             hero_direction = "right"
             moving = True
         elif keys[pygame.K_UP]:
-            player_y -= player_speed
+            new_y -= player_speed
             hero_direction = "up"
             moving = True
         elif keys[pygame.K_DOWN]:
-            player_y += player_speed
+            new_y += player_speed
             hero_direction = "down"
             moving = True
 
+        if is_in_room(new_x, new_y, player_size):
+            player_x, player_y = new_x, new_y
+
         # Granice
-        player_x = max(0, min(width - player_size, player_x))
-        player_y = max(0, min(height - player_size, player_y))
+        #player_x = max(0, min(width - player_size, player_x))
+        #player_y = max(0, min(height - player_size, player_y))
 
         # Hero animacija
         if moving:
@@ -197,6 +221,12 @@ def game():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     running = False
+
+        '''
+        for room in rooms:
+            pygame.draw.rect(screen, (0, 255, 0), room, 2)  # Zeleni obrubi
+        '''
+
 
         pygame.display.flip()
         pygame.time.delay(30)
